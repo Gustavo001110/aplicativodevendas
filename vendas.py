@@ -9,6 +9,9 @@ from functools import partial
 from firebase import Firebase
 from bannervendedor import BannerVendedor
 from datetime import date
+import certifi
+
+os.environ["SSL_CERT_FILE"] = certifi.where()
 
 GUI = Builder.load_file("main.kv")
 
