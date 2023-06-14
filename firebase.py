@@ -5,7 +5,7 @@ from kivy.app import App
 class Firebase():
     API_KEY = "AIzaSyAsmA3NoEXhviTNbM5BBYpoYxaCtaLfU9w"
 
-    def criar_conta(self, email, senha):
+        def criar_conta(self, email, senha):
         link = f"https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={self.API_KEY}"
         print(email, senha)
         info = {"email": email,
@@ -30,17 +30,19 @@ class Firebase():
             with open("refreshtoken.txt", "w") as arquivo:
                 arquivo.write(refresh_token)
 
-            req_id = requests.get(f"https://aplicativovendas2-default-rtdb.firebaseio.com/proximo_id_vendedor.json?auth={self.id_token}")
+            req_id = requests.get(
+                f"https://aplicativovendas2-default-rtdb.firebaseio.com/proximo_id_vendedor.json?auth={id_token}")
             id_vendedor = req_id.json()
 
-            link = f"https://aplicativovendas2-default-rtdb.firebaseio.com/{local_id}.json?auth={self.id_token}"
+            link = f"https://aplicativovendas2-default-rtdb.firebaseio.com/{local_id}.json?auth={id_token}"
             info_usuario = f'{{"avatar": "foto1.png", "equipe": "", "total_vendas": "0", "vendas": "", "id_vendedor": "{id_vendedor}"}}'
             requisicao_usuario = requests.patch(link, data=info_usuario)
 
             # atualizar o valor do proximo_id_vendedor
             proximo_id_vendedor = int(id_vendedor) + 1
             info_id_vendedor = f'{{"proximo_id_vendedor": "{proximo_id_vendedor}"}}'
-            requests.patch(f"https://aplicativovendas2-default-rtdb.firebaseio.com/.json?auth={self.id_token}", data=info_id_vendedor)
+            requests.patch(f"https://aplicativovendas2-default-rtdb.firebaseio.com/.json?auth={id_token}",
+                           data=info_id_vendedor)
 
             meu_aplicativo.carregar_infos_usuario()
             meu_aplicativo.mudar_tela("homepage")
